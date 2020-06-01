@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ThirdPersonMovement : MonoBehaviour {
 
     public CharacterController controller;
 
@@ -12,7 +11,6 @@ public class ThirdPersonMovement : MonoBehaviour {
     public Transform cam;
 
     // Movement Variables
-    public float movementSpeed = 6f;
     public float gravity = -9.81f;
     public Vector3 velocity;
     public float jumpForce = .5f;
@@ -22,16 +20,11 @@ public class ThirdPersonMovement : MonoBehaviour {
     public LayerMask groundMask;
     public Transform groundCheck;
     private bool grounded = true;
-    
 
     // Update is called once per frame
-    void Update ()
     {
         grounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
-        if (grounded && velocity.y < 0)
-            velocity.y = -2;
-        
         if (Input.GetKeyDown("space") && grounded)
         {
             velocity.y += jumpForce;
@@ -47,7 +40,6 @@ public class ThirdPersonMovement : MonoBehaviour {
         if (direction.magnitude >= .1f)
         {
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, 
                 ref turnSmoothVelocity, turnSmoothTime);
 
 
@@ -62,4 +54,3 @@ public class ThirdPersonMovement : MonoBehaviour {
         controller.Move(velocity * Time.deltaTime);
 
     }
-}
