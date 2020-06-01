@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class ThirdPersonMovement : MonoBehaviour
+{
 
     public CharacterController controller;
 
@@ -11,6 +13,8 @@ using UnityEngine;
     public Transform cam;
 
     // Movement Variables
+    public float groundMovementSpeed = 6f;
+    public float movementSpeed = 0f;
     public float gravity = -9.81f;
     public Vector3 velocity;
     public float jumpForce = .5f;
@@ -20,16 +24,28 @@ using UnityEngine;
     public LayerMask groundMask;
     public Transform groundCheck;
     private bool grounded = true;
-
+    
     // Update is called once per frame
+    void Update()
     {
         grounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+
+        if ((Input.GetKeyDown("a") || Input.GetKeyDown("d")) && !grounded)
+            movementSpeed = movementSpeed + .7f;
 
         if (Input.GetKeyDown("space") && grounded)
         {
             velocity.y += jumpForce;
             grounded = false;
         }
+
+        if (grounded && velocity.y < 0)
+        {
+            velocity.y = -2;
+            movementSpeed = groundMovementSpeed;
+            grounded = true;
+        }
+
 
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
@@ -40,6 +56,7 @@ using UnityEngine;
         if (direction.magnitude >= .1f)
         {
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle,
                 ref turnSmoothVelocity, turnSmoothTime);
 
 
@@ -54,3 +71,4 @@ using UnityEngine;
         controller.Move(velocity * Time.deltaTime);
 
     }
+}
