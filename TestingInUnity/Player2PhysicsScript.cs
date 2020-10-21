@@ -8,7 +8,7 @@ public class Player2Physics : MonoBehaviour
     public float custForce_xComponent = 0, custForce_yComponent = 1500, custForce_zComponent = 3000;
     public float movementForce_x = 0, movementForce_y = 0, movementForce_z = 0;
     private bool movingLeft, movingRight, movingBack, movingForward;
-	// Fuck you
+
 	void Start ()
     {
         Debug.Log("I'm 10 and 11!");
